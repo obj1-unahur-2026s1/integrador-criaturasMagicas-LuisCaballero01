@@ -4,6 +4,11 @@ class Criatura{
     var rol
     
     method rol() = rol
+    method poderMagico() = poderMagico
+    method poderOfensivo() = (10*poderMagico) + rol.poderExtra(self)
+    method esFormidable() = self.esAstuta() || self.esExtraordinaria()
+    method esExtraordinaria() = rol.esExtraordinario(self)
+    method esAstuta()
 
     method cambiarRol(){ // muy estructurado?
         if (rol.className() == "Criaturas.Guardian")
@@ -11,19 +16,12 @@ class Criatura{
         else if (rol.className() == "Criaturas.Domador" && rol.mascotas().any({m => m.tieneCuernos()}))
             rol = new Hechicero() // y error?
         else
-            rol = new Guardian()
-
-            
+            rol = new Guardian()        
     }
 
-    method poderMagico() = poderMagico
-
-    method poderOfensivo() = (10*poderMagico) + rol.poderExtra(self)
-
-    method esFormidable() = self.esAstuta() || self.esExtraordinaria()
-
-    method esExtraordinaria() = rol.esExtraordinario(self)
-    method esAstuta()
+    method perderPoderMagico(){
+        poderMagico -= poderMagico*0.15
+    }
 }
 
 
@@ -35,8 +33,8 @@ class Duende inherits Criatura{
 class Hada inherits Criatura{
     var kilometrosQueVuela = 2
 
-    override method esAstuta() = poderMagico > 50
     override method esFormidable() = super() && kilometrosQueVuela>10
+    override method esAstuta() = poderMagico > 50
 
     method aumentarKm(){
         kilometrosQueVuela = 25.min(kilometrosQueVuela + 1)
